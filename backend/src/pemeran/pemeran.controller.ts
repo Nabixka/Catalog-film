@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseInterceptors, UploadedFile, BadRequestException, Query } from '@nestjs/common';
 import { PemeranService } from './pemeran.service';
 import { ValidatePemeranExist } from 'src/pipes/validate.pemeran.exist';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -28,6 +28,11 @@ export class PemeranController {
   create(@Body() data: {name: string}, @UploadedFile() file: Express.Multer.File){
     if(!file) throw new BadRequestException("Isi Yang Benar")
     return this.pemeranService.create({...data, image: `/uploads/pemeran/${file?.filename}`})
+  }
+
+  @Get("film/:id")
+  getByFilm(@Param("id") id: string){
+    return this.pemeranService.getByFilm(Number(id))
   }
 
   @Get("/:id")

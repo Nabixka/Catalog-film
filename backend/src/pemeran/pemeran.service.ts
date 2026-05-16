@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { KnexService } from 'src/db/knex.service';
+import { pemeranFilmMapping } from 'src/mapping/pemeranFilmMapping';
 
 @Injectable()
 export class PemeranService {
@@ -18,6 +19,24 @@ export class PemeranService {
     return {
       message: "success",
       data: get
+    }
+  }
+
+  async getByFilm(id: number){
+    const get = await this.knexService.connection("pemeran_film")
+    .join("pemeran", "pemeran.id", "pemeran_film.pemeran_id")
+    .join("film", "film.id", "pemeran_film.film_id")
+    .select({
+      film_title: "film.title",
+      pemeran_id: "pemeran.id",
+      pemeran_name: "pemeran.name",
+      pemeran_image: "pemeran.image"
+    })
+    .where("film.id", id)
+
+    return {
+      message: "success",
+      data: get.map(pemeranFilmMapping)
     }
   }
 

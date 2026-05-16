@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { KnexService } from 'src/db/knex.service';
-import { filmMapping } from 'src/mapping/filmMapping';
+import { filmMapping, filmMappingByPemain } from 'src/mapping/filmMapping';
 
 @Injectable()
 export class FilmService {
@@ -16,12 +16,33 @@ export class FilmService {
     }
   }
 
-  async getOne(id: Number) {
+  async getOne(id: number) {
     const data = await this.knexService.connection("film").where("id", id).first()
 
     return {
       message: "success",
       data: filmMapping(data)
+    }
+  }
+
+  async getByPemain(name: string){
+    const data = await this.knexService.connection("pemeran_film")
+    .join('pemeran', 'pemeran.id', 'pemeran_film.pemeran_id')
+    .join('film', 'film.id', 'pemeran_film.film_id')
+    .select({
+      id: "pemeran_film.id",
+      film_id: "film.id",
+      title: "film.title",
+      image: "film.image",
+      description: "film.description",
+      tanggal_rilis: "film.tanggal_rilis"
+    })
+    .whereILike("pemeran.name", `%${name}%`)
+    if(data.length === 0 ) throw new NotFoundException("Tidak Ada Film Yang Dibintangi aktor tersebut")
+
+    return {
+      message: "success",
+      data: data.map(filmMappingByPemain)
     }
   }
 

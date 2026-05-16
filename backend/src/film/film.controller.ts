@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { FilmService } from './film.service';
 import { ValidateFilmExist } from 'src/pipes/validate.film.exist';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -28,7 +28,11 @@ export class FilmController {
   create(@UploadedFile() file: Express.Multer.File, @Body() data: {title: string, description: string, sutradara: string, tanggal_rilis: string}){
     return this.filmService.create({...data, image: `/uploads/film/${file?.filename}` })
   } 
-  
+
+  @Get('pemeran')
+  getByPemeran(@Query('name') name: string){
+    return this.filmService.getByPemain(name)
+  }
 
   @Get('/:id')
   getOne(@Param('id', ValidateFilmExist)  id: string){
