@@ -15,7 +15,6 @@ export class FilmController {
   }
 
   @Post()
-  @HttpCode(201)
   @UseInterceptors(FileInterceptor('image', {
     storage: diskStorage({
       destination: "./uploads/film",

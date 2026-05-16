@@ -8,7 +8,6 @@ exports.up = function(knex) {
     table.string("title").notNullable()
     table.text("image").nullable()
     table.text("description").notNullable()
-    table.string("sutradara").notNullable()
     table.datetime("tanggal_rilis").nullable()
   })
 };
