@@ -1,0 +1,60 @@
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> } 
+ */
+exports.seed = async function (knex) {
+  // Deletes ALL existing entries
+  await knex('pemeran').del()
+  await knex('pemeran').insert([
+    { name: 'Reza Rahadian', image: '/uploads/pemeran/reza-rahadian' },
+    { name: 'Pevita Pearce', image: '/uploads/pemeran/pevita-pearce' },
+    { name: 'Iko Uwais', image: '/uploads/pemeran/iko-uwais' },
+    { name: 'Chelsea Islan', image: '/uploads/pemeran/chelsea-islan' },
+    { name: 'Joe Taslim', image: '/uploads/pemeran/joe-taslim' },
+    { name: 'Nicholas Saputra', image: '/uploads/pemeran/nicholas-saputra' },
+    { name: 'Dian Sastrowardoyo', image: '/uploads/pemeran/dian-sastrowardoyo' },
+    { name: 'Chicco Jerikho', image: '/uploads/pemeran/chicco-jerikho' },
+    { name: 'Tara Basro', image: '/uploads/pemeran/tara-basro' },
+    { name: 'Ario Bayu', image: '/uploads/pemeran/ario-bayu' },
+    { name: 'Prilly Latuconsina', image: '/uploads/pemeran/prilly-latuconsina' },
+    { name: 'Angga Yunanda', image: '/uploads/pemeran/angga-yunanda' },
+    { name: 'Iqbaal Ramadhan', image: '/uploads/pemeran/iqbaal-ramadhan' },
+    { name: 'Mawar de Jongh', image: '/uploads/pemeran/mawar-de-jongh' },
+    { name: 'Jefri Nichol', image: '/uploads/pemeran/jefri-nichol' },
+    { name: 'Anya Geraldine', image: '/uploads/pemeran/anya-geraldine' },
+    { name: 'Vino G. Bastian', image: '/uploads/pemeran/vino-g-bastian' },
+    { name: 'Marsha Timothy', image: '/uploads/pemeran/marsha-timothy' },
+    { name: 'Tora Sudiro', image: '/uploads/pemeran/tora-sudiro' },
+    { name: 'Indro Warkop', image: '/uploads/pemeran/indro-warkop' },
+    { name: 'Adipati Dolken', image: '/uploads/pemeran/adipati-dolken' },
+    { name: 'Putri Marino', image: '/uploads/pemeran/putri-marino' },
+    { name: 'Laura Basuki', image: '/uploads/pemeran/laura-basuki' },
+    { name: 'Lukman Sardi', image: '/uploads/pemeran/lukman-sardi' },
+    { name: 'Aghniny Haque', image: '/uploads/pemeran/aghniny-haque' },
+    { name: 'Shenina Cinnamon', image: '/uploads/pemeran/shenina-cinnamon' },
+    { name: 'Bryan Domani', image: '/uploads/pemeran/bryan-domani' },
+    { name: 'Syifa Hadju', image: '/uploads/pemeran/syifa-hadju' },
+    { name: 'Refal Hady', image: '/uploads/pemeran/refal-hady' },
+    { name: 'Jourdy Pranata', image: '/uploads/pemeran/jourdy-pranata' },
+    { name: 'Lutesha', image: '/uploads/pemeran/lutesha' },
+    { name: 'Jerome Kurnia', image: '/uploads/pemeran/jerome-kurnia' },
+    { name: 'Yayan Ruhian', image: '/uploads/pemeran/yayan-ruhian' },
+    { name: 'Cecep Arif Rahman', image: '/uploads/pemeran/cecep-arif-rahman' },
+    { name: 'Christine Hakim', image: '/uploads/pemeran/christine-hakim' },
+    { name: 'Slamet Rahardjo', image: '/uploads/pemeran/slamet-rahardjo' },
+    { name: 'Roy Marten', image: '/uploads/pemeran/roy-marten' },
+    { name: 'Meriam Bellina', image: '/uploads/pemeran/meriam-bellina' },
+    { name: 'Rano Karno', image: '/uploads/pemeran/rano-karno' },
+    { name: 'Maudy Koesnaedi', image: '/uploads/pemeran/maudy-koesnaedi' },
+    { name: 'Maudy Ayunda', image: '/uploads/pemeran/maudy-ayunda' },
+    { name: 'Tatjana Saphira', image: '/uploads/pemeran/tatjana-saphira' },
+    { name: 'Morgan Oey', image: '/uploads/pemeran/morgan-oey' },
+    { name: 'Dion Wiyoko', image: '/uploads/pemeran/dion-wiyoko' },
+    { name: 'Boy William', image: '/uploads/pemeran/boy-william' },
+    { name: 'Ringgo Agus Rahman', image: '/uploads/pemeran/ringgo-agus-rahman' },
+    { name: 'Nirina Zubir', image: '/uploads/pemeran/nirina-zubir' },
+    { name: 'Tika Panggabean', image: '/uploads/pemeran/tika-panggabean' },
+    { name: 'Arie Kriting', image: '/uploads/pemeran/arie-kriting' },
+    { name: 'Ernest Prakasa', image: '/uploads/pemeran/ernest-prakasa' }
+  ]);
+};

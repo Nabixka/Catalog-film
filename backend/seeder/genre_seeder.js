@@ -1,0 +1,60 @@
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> } 
+ */
+exports.seed = async function (knex) {
+  // Deletes ALL existing entries
+  await knex('genre').del()
+  await knex('genre').insert([
+    { name: 'Aksi' },
+    { name: 'Petualangan' },
+    { name: 'Animasi' },
+    { name: 'Komedi' },
+    { name: 'Kriminal' },
+    { name: 'Dokumenter' },
+    { name: 'Drama' },
+    { name: 'Keluarga' },
+    { name: 'Fantasi' },
+    { name: 'Sejarah' },
+    { name: 'Horor' },
+    { name: 'Musik' },
+    { name: 'Misteri' },
+    { name: 'Romantis' },
+    { name: 'Fiksi Ilmiah' },
+    { name: 'Film Televisi' },
+    { name: 'Thriller' },
+    { name: 'Perang' },
+    { name: 'Western' },
+    { name: 'Biografi' },
+    { name: 'Religi' },
+    { name: 'Misteri Psikologis' },
+    { name: 'Komedi Romantis' },
+    { name: 'Horor Komedi' },
+    { name: 'Aksi Komedi' },
+    { name: 'Musikal' },
+    { name: 'Olahraga' },
+    { name: 'Superhero' },
+    { name: 'Bencana' },
+    { name: 'Gore' },
+    { name: 'Slasher' },
+    { name: 'Psikologis Thriller' },
+    { name: 'Medis' },
+    { name: 'Politik' },
+    { name: 'Hukum' },
+    { name: 'Detektif' },
+    { name: 'Mata-mata' },
+    { name: 'Cyberpunk' },
+    { name: 'Steampunk' },
+    { name: 'Dystopian' },
+    { name: 'Pasca-Apokalips' },
+    { name: 'Fantasi Gelap' },
+    { name: 'Supranatural' },
+    { name: 'Zombie' },
+    { name: 'Kaiju' },
+    { name: 'Mockumentary' },
+    { name: 'Coming-of-Age' },
+    { name: 'Melodrama' },
+    { name: 'Satir' },
+    { name: 'Noir' }
+  ]);
+};

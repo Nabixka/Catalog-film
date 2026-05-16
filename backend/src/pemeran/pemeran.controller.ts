@@ -1,6 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { PemeranService } from './pemeran.service';
 import { ValidatePemeranExist } from 'src/pipes/validate.pemeran.exist';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('pemeran')
 export class PemeranController {
@@ -12,8 +15,19 @@ export class PemeranController {
   }
 
   @Post()
-  create(@Body() data: {name: string}){
-    return this.pemeranService.create(data)
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: './uploads/pemeran',
+      filename(req, file, callback) {
+        const unique = Date.now() + "-" + Math.round(Math.random() * 1e9)
+        const ext = extname(file.originalname)
+        callback(null, `${file.fieldname}-${unique}${ext}`)
+      },
+    })
+  }))
+  create(@Body() data: {name: string}, @UploadedFile() file: Express.Multer.File){
+    if(!file) throw new BadRequestException("Isi Yang Benar")
+    return this.pemeranService.create({...data, image: `/uploads/pemeran/${file?.filename}`})
   }
 
   @Get("/:id")
@@ -21,9 +35,23 @@ export class PemeranController {
     return this.pemeranService.getOne(Number(id))
   }
 
-  @Put('/:id')
-  update(@Param('id') id: string, @Body() data: {name: string}){
-    return this.pemeranService.update(Number(id), data)
+  @Patch('/:id')
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: './uploads/pemeran',
+      filename(req, file, callback) {
+        const unique = Date.now() + "-" + Math.round(Math.random() * 1e9)
+        const ext = extname(file.originalname)
+        callback(null, `${file.fieldname}-${unique}${ext}`)
+      },
+    })
+  }))
+  update(@Param('id', ValidatePemeranExist) id: string, @Body() data: {name: string}, @UploadedFile() file: Express.Multer.File){
+    return this.pemeranService.update(Number(id), 
+    {
+      ...data, 
+      image: file ? `/uploads/pemeran/${file.filename}` : undefined
+    })
   }
 
   @Delete("/:id")

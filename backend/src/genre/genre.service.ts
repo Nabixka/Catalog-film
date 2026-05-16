@@ -23,11 +23,11 @@ export class GenreService {
     }
 
     // Post
-    async create(data: {name: string}){
-        if(!data.name) throw new BadRequestException("Isi Yang Benar")
-        const same = await this.knexService.connection("genre").where({"name": data.name}).first()
+    async create(name: string){
+        if(!name) throw new BadRequestException("Isi Yang Benar")
+        const same = await this.knexService.connection("genre").where(name).first()
         if(same) throw new ConflictException("Genre Sudah Ada")
-        const [post] = await this.knexService.connection("genre").insert({"name": data.name}).returning("*")
+        const [post] = await this.knexService.connection("genre").insert(name).returning("*")
         return {
             message: "success",
             data: post

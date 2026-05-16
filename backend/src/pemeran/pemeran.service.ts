@@ -21,9 +21,9 @@ export class PemeranService {
     }
   }
 
-  async create(data: {name: string}) {
+  async create(data: {name: string, image: string}) {
     if (!data.name) throw new BadRequestException("Isi Yang Benar")
-    const [post] = await this.knexService.connection("pemeran").insert({name: data.name}).returning("*")
+    const [post] = await this.knexService.connection("pemeran").insert(data).returning("*")
 
     return {
       message: "success",
@@ -31,9 +31,9 @@ export class PemeranService {
     }
   }
 
-  async update(id: number, data: {name: string}) {
+  async update(id: number, data: {name: string, image?: string}) {
     if (!data.name) throw new BadRequestException("Isi yang Benar")
-    const [update] = await this.knexService.connection("pemeran").update({name: data.name}).where("id", id).returning("*")
+    const [update] = await this.knexService.connection("pemeran").update(data).where("id", id).returning("*")
     return {
       message: "success",
       data: update
