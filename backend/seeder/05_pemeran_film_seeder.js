@@ -6,6 +6,8 @@ exports.seed = async function (knex) {
   // Deletes ALL existing entries
   await knex('pemeran_film').del()
   await knex('pemeran_film').insert([
+    { pemeran_id: 1, film_id: 5 },  // Reza Rahadian - Habibie & Ainun
+    { pemeran_id: 1, film_id: 4 },  // Reza Rahadian - Seperti Dendam, Rindu Harus Dibayar Tuntas
     { pemeran_id: 2, film_id: 1 },  // Cut Mini - Laskar Pelangi
     { pemeran_id: 8, film_id: 2 },  // Joe Taslim - The Raid
     { pemeran_id: 6, film_id: 2 },  // Iko Uwais - The Raid

@@ -25,10 +25,10 @@ exports.seed = async function (knex) {
       tanggal_rilis: '2002-02-07 00:00:00',
     },
     {
-      title: 'Pengabdi Setan',
-      image: '/uploads/film/pengabdi-setan.jpg',
-      description: 'Sebuah keluarga dihantui oleh arwah ibu mereka yang baru saja meninggal, dan teror semakin mencekam ketika rahasia kelam terungkap.',
-      tanggal_rilis: '2017-09-28 00:00:00',
+      title: 'Seperti Dendam, Rindu Harus Dibayar Tuntas',
+      image: '/uploads/film/sdrhdt.jpg',
+      description: 'Seperti Dendam, Rindu Harus Dibayar Tuntas bercerita tentang Ajo Kawir, seorang jagoan yang tak takut mati. Hasratnya yang besar untuk bertarung didorong oleh sebuah rahasia — ia impoten.',
+      tanggal_rilis: '2021-02-12 00:00:00'
     },
     {
       title: 'Habibie & Ainun',
