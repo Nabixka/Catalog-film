@@ -36,7 +36,7 @@ export class FilmController {
 
   @Get('/:id')
   getOne(@Param('id', ValidateFilmExist)  id: string){
-    return this.filmService.getOne(Number(id))
+    return this.filmService.getFilmDetail(Number(id))
   }
 
   @Patch('/:id')

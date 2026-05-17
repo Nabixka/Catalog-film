@@ -32,7 +32,7 @@ export class SutradaraController {
 
   @Get("/:id")
   getOne(@Param('id', validateSutradaraExist) id: string){
-    return this.sutradaraService.getOne(Number(id))
+    return this.sutradaraService.getDetail(Number(id))
   }
 
   @Patch("/:id")

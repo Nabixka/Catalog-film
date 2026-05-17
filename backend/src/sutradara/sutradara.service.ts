@@ -14,11 +14,25 @@ export class SutradaraService {
         }
     }
 
-    async getOne(id: number){
-        const get = await this.KnexService.connection("sutradara").where("id", id).first()
+    
+    async getDetail(id: number){
+        const sutradara = await this.KnexService.connection("sutradara").where("id", id).first()
+        const film = await this.KnexService.connection("sutradara_film")
+        .join("sutradara", "sutradara.id", "sutradara_film.sutradara_id")
+        .join("film", "film.id", "sutradara_film.film_id")
+        .select({
+            film_id: "film.id",
+            film_title: "film.title",
+            film_image: "film.image",
+            film_description: "film.description"
+        })
+        .where("sutradara.id", id)
         return {
             message: "success",
-            data: get
+            data: {
+                ...sutradara,
+                film
+            }
         }
     }
 
