@@ -25,8 +25,12 @@ export class FilmController {
       }
     })
   }))
-  create(@UploadedFile() file: Express.Multer.File, @Body() data: {title: string, description: string, sutradara: string, tanggal_rilis: string}){
-    return this.filmService.create({...data, image: `/uploads/film/${file?.filename}` })
+  create(@UploadedFile() file: Express.Multer.File, @Body() data: any){
+    const sutradara_ids = JSON.parse(data.sutradara_ids)
+    const genre_ids = JSON.parse(data.genre_ids)
+    const pemeran_ids = JSON.parse(data.pemeran_ids)
+
+    return this.filmService.create({...data, sutradara_ids, genre_ids, pemeran_ids, image: `/uploads/film/${file?.filename}` })
   } 
 
   @Get('pemeran')

@@ -8,11 +8,47 @@ export class FilmService {
 
   // Get
   async getAll() {
-    const data = await this.knexService.connection("film").select("*")
+    const films = await this.knexService.connection("film")
+    const result = await Promise.all(
+      films.map(async (film) => {
+        const pemeran = await this.knexService.connection("pemeran_film")
+          .join("pemeran", "pemeran.id", "pemeran_id")
+          .select({
+            id: "pemeran.id",
+            name: "pemeran.name",
+            image: "pemeran.image"
+          })
+          .where("film_id", film.id)
+
+        const genre = await this.knexService.connection("genre_film")
+          .join("genre", "genre.id", "genre_id")
+          .select({
+            id: "genre.id",
+            name: "genre.name"
+          })
+          .where("film_id", film.id)
+
+        const sutradara = await this.knexService.connection("sutradara_film")
+          .join("sutradara", "sutradara.id", "sutradara_id")
+          .select({
+            id: "sutradara.id",
+            name: "sutradara.name",
+            image: "sutradara.image"
+          })
+          .where("film_id", film.id)
+
+        return {
+          ...film,
+          sutradara,
+          genre,
+          pemeran
+        }
+      })
+    )
 
     return {
       message: "success",
-      data: data.map(filmMapping)
+      data: result
     }
   }
 
@@ -20,30 +56,30 @@ export class FilmService {
     const film = await this.knexService.connection("film").where("id", id).first()
 
     const sutradara = await this.knexService.connection("sutradara_film")
-    .join("sutradara", "sutradara.id", "sutradara_id")
-    .select({
-      id: "sutradara.id",
-      name: "sutradara.name",
-      image: "sutradara.image"
-    })
-    .where("film_id", id)
+      .join("sutradara", "sutradara.id", "sutradara_id")
+      .select({
+        id: "sutradara.id",
+        name: "sutradara.name",
+        image: "sutradara.image"
+      })
+      .where("film_id", id)
 
     const genre = await this.knexService.connection("genre_film")
-    .join("genre", "genre.id", "genre_id")
-    .select({
-      id: "genre.id",
-      name: "genre.name"
-    })
-    .where("film_id", id)
+      .join("genre", "genre.id", "genre_id")
+      .select({
+        id: "genre.id",
+        name: "genre.name"
+      })
+      .where("film_id", id)
 
     const pemeran = await this.knexService.connection("pemeran_film")
-    .join("pemeran", "pemeran.id", "pemeran_id")
-    .select({
-      id: "pemeran.id",
-      name: "pemeran.name",
-      image: "pemeran.image"
-    })
-    .where("film_id", id)
+      .join("pemeran", "pemeran.id", "pemeran_id")
+      .select({
+        id: "pemeran.id",
+        name: "pemeran.name",
+        image: "pemeran.image"
+      })
+      .where("film_id", id)
 
     return {
       message: "success",
@@ -78,21 +114,83 @@ export class FilmService {
   }
 
   // Post
-  async create(data: { title: string, image: string, description: string, sutradara: string, tanggal_rilis: string }) {
-    if (!data.title || !data.image || !data.description || !data.sutradara || !data.tanggal_rilis) {
+  async create(data: { title: string, image: string, description: string, tanggal_rilis: string, sutradara_ids: number[], pemeran_ids: number[], genre_ids: number[] }) {
+
+    if (!data.title || !data.image || !data.description || !data.tanggal_rilis || !data.genre_ids || !data.pemeran_ids || !data.sutradara_ids) {
       throw new BadRequestException("Isi Yang Benar")
     }
-    else {
-      const [post] = await this.knexService.connection("film").insert(data).returning("*")
-      return {
-        message: "success",
-        data: filmMapping(post)
+    const [post] = await this.knexService.connection("film").insert({
+      title: data.title,
+      image: data.image,
+      description: data.description,
+      tanggal_rilis: data.tanggal_rilis
+    }).returning("*")
+
+    const {sutradara_ids, pemeran_ids, genre_ids} = data
+
+    const isSutradaraArray = Array.isArray(sutradara_ids) ? sutradara_ids : [sutradara_ids]
+    const isPemeranArray = Array.isArray(pemeran_ids) ? pemeran_ids : [pemeran_ids]
+    const isGenreArray = Array.isArray(genre_ids) ? genre_ids : [genre_ids]
+
+    const pemeranFilm = isPemeranArray.map(pemeran_id => ({
+      film_id: post.id,
+      pemeran_id
+    }))
+
+    const sutradaraFilm = isSutradaraArray.map(sutradara_id => ({
+      film_id: post.id,
+      sutradara_id
+    }))
+
+    const genreFilm = isGenreArray.map(genre_id => ({
+      film_id: post.id,
+      genre_id
+    }))
+
+    const insertGenre = await this.knexService.connection("genre_film").insert(genreFilm)
+    const insertSutradara = await this.knexService.connection("sutradara_film").insert(sutradaraFilm)
+    const insertPemeran = await this.knexService.connection("pemeran_film").insert(pemeranFilm)
+
+    const sutradara = await this.knexService.connection("sutradara_film")
+      .join("sutradara", "sutradara.id", "sutradara_id")
+      .select({
+        id: "sutradara.id",
+        name: "sutradara.name",
+        image: "sutradara.image"
+      })
+      .where("film_id", post.id)
+
+    const genre = await this.knexService.connection("genre_film")
+      .join("genre", "genre.id", "genre_id")
+      .select({
+        id: "genre.id",
+        name: "genre.name"
+      })
+      .where("film_id", post.id)
+
+    const pemeran = await this.knexService.connection("pemeran_film")
+      .join("pemeran", "pemeran.id", "pemeran_id")
+      .select({
+        id: "pemeran.id",
+        name: "pemeran.name",
+        image: "pemeran.image"
+      })
+      .where("film_id", post.id)
+
+
+    return {
+      message: "success",
+      data: {
+        ...post,
+        sutradara,
+        genre,
+        pemeran
       }
     }
   }
 
   // Patch
-  async update(id: number, data: { title: string, image?: string, description: string, sutradara: string, tanggal_rilis: string }) {
+  async update(id: number, data: { title: string, image?: string, description: string, tanggal_rilis: string }) {
 
     Object.keys(data).forEach((key) => {
       if (data[key] === undefined) {
