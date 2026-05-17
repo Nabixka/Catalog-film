@@ -22,10 +22,10 @@
                 <button @click="isOpen = !isOpen" class="text-4xl">=</button>
             </div>
             <div class="lg:flex hidden gap-5 text-white font-semibold">
-                <router-link to="/">Beranda</router-link>
-                <router-link to="/film">Film</router-link>
-                <router-link to="/sutradara">Sutradara</router-link>
-                <router-link to="/aktor">Aktor</router-link>
+                <router-link active-class="text-orange-500 border-b pb-1" to="/">Beranda</router-link>
+                <router-link active-class="text-orange-500 border-b pb-1" to="/film">Film</router-link>
+                <router-link active-class="text-orange-500 border-b pb-1" to="/sutradara">Sutradara</router-link>
+                <router-link active-class="text-orange-500 border-b pb-1" to="/aktor">Aktor</router-link>
             </div>
         </div>
         <div v-if="isOpen" class="bg-gray-950 text-white flex flex-col gap-2 pb-5 pt-2 text-center">

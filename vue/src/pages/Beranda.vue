@@ -6,6 +6,10 @@
     const films = ref([])
     const isLoading = ref(true)
     const API_URL = import.meta.env.VITE_API_URL
+
+    const genre = (film) => {
+        return film.genre.map(g => g.name).join(", ")
+    }
     
     const getFilm = async () => {
         const res = await api.get("/film")
@@ -46,9 +50,9 @@
                     <br>
                     temukan cerita yang akan menginspirasi Anda
                 </h5>
-                <button class="lg:w-1/4 w-1/2  mt-2 bg-orange-500 hover:bg-orange-600 duration-300 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-orange-500/30">
+                <router-link to="/film" class="lg:w-1/4 w-1/2  mt-2 bg-orange-500 hover:bg-orange-600 duration-300 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-orange-500/30">
                     Jelajahi Film
-                </button>
+                </router-link>
             </div>
 
             <!-- Decoration -->
@@ -66,9 +70,9 @@
                         Jelajahi Film
                     </h3>
 
-                    <button class="rounded-xl px-1 py-1 lg:px-4 lg:py-2 font-semibold border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white duration-300">
+                    <router-link to="/film" class="rounded-xl px-1 py-1 lg:px-4 lg:py-2 font-semibold border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white duration-300">
                         Lihat Semua →
-                    </button>
+                    </router-link>
                 </div>
 
                 <!-- Film Grid -->
@@ -90,8 +94,8 @@
                             <h3 class="font-semibold text-white truncate text-lg">
                                 {{ f.title }}
                             </h3>
-                            <h3 class="text-orange-400 text-sm font-medium">
-                                {{ f.genre[0].name }}
+                            <h3 class="text-orange-400 truncate text-sm font-medium">
+                                {{ genre(f) }}
                             </h3>
                             <h3 class="text-gray-400 text-sm">
                                 {{ new Date(f.tanggal_rilis).getFullYear() }}
