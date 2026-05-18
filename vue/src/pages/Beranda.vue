@@ -12,8 +12,18 @@
     }
     
     const getFilm = async () => {
-        const res = await api.get("/film")
-        films.value = res.data.data
+        try{
+            const res = await api.get("/film")
+            films.value = res.data.data
+        }
+        catch(err){
+            if(err.status === 500){
+                console.log("500")
+            }
+        }
+        finally{
+            isLoading.value = false
+        }
     }
     
     onMounted(() => {
