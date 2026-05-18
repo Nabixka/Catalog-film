@@ -103,64 +103,153 @@
     <Navbar />
 
     <div class="min-h-screen bg-black">
-        <div
-            class="bg-gradient-to-r from-[#020617] via-[#0f172a] to-orange-600 h-[35vh] flex justify-center pl-6 flex-col gap-3 pt-15">
-            <h2 class="text-white text-3xl font-bold">Daftar <span class="text-orange-400">Film</span></h2>
-            <h5 class="w-1/3 text-gray-300">Jelajahi seluruh koleksi film kami dair berbagai genre dan temukan film
-                favorit anda</h5>
-        </div>
-        <div class="bg-gradient-to-b from-[#020617] via-[#0f172a] to-black pl-10 pr-10 pt-5 pb-10">
 
-            <div class="flex justify-between text-white pb-5">
-                <div class="flex gap-3">
-                    <input v-model="search" type="text"
-                        class="border border-gray-500 rounded-md p-1 pl-2 w-50 text-gray-400" placeholder="Cari Film">
-                    <select v-model="selectedGenre" class="border border-gray-500 p-2 rounded-md">
-                        <option value="">Semua Genre</option>
-                        <option :value="g.name" v-for="g in genres">{{ g.name }}</option>
-                    </select>
-                    <select v-model="selectedTahun" class="border border-gray-500 p-2 rounded-md">
-                        <option default value="">Semua Tahun</option>
-                        <option :value="y" v-for="y in years">{{ y }}</option>
-                    </select>
-                </div>
-                <div>
-                    <select v-model="urutan" class="border border-gray-500 p-2 rounded-md text-orange-500">
-                        <option value="terbaru">Terbaru</option>
-                        <option value="terlama">Terlama</option>
-                    </select>
+        <!-- HERO -->
+        <div
+            class="relative overflow-hidden bg-gradient-to-r from-[#020617] via-[#0f172a] to-orange-700 h-[35vh] flex justify-center pl-8 flex-col gap-4 pt-16">
+
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-black/40"></div>
+
+            <!-- Blur -->
+            <div
+                class="absolute right-[-100px] top-[-100px] w-[350px] h-[350px] bg-orange-500/20 rounded-full blur-3xl">
+            </div>
+
+            <!-- Content -->
+            <div class="relative z-10 flex flex-col gap-3">
+
+                <h2 class="text-white text-5xl font-extrabold tracking-wide">
+                    Daftar <span class="text-orange-400">Film</span>
+                </h2>
+
+                <h5 class="w-1/3 text-gray-300 text-lg leading-relaxed">
+                    Jelajahi seluruh koleksi film kami dari berbagai genre
+                    dan temukan film favorit Anda.
+                </h5>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="bg-gradient-to-b from-[#020617] via-[#0f172a] to-black px-10 pt-6 pb-12">
+
+            <!-- FILTER -->
+            <div
+                class="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-5 shadow-2xl mb-8">
+
+                <div class="flex flex-col lg:flex-row lg:justify-between gap-5 text-white">
+
+                    <!-- Left -->
+                    <div class="flex flex-wrap gap-4">
+
+                        <!-- Search -->
+                        <input
+                            v-model="search"
+                            type="text"
+                            class="bg-gray-800 border border-white/10 focus:border-orange-500 outline-none rounded-xl px-4 py-3 w-64 text-gray-300 placeholder:text-gray-500 duration-300"
+                            placeholder="Cari Film..." 
+                        >
+
+                        <!-- Genre -->
+                        <select v-model="selectedGenre" class="bg-gray-800 border border-white/10 focus:border-orange-500 outline-none rounded-xl px-4 py-3 text-gray-300 duration-300">
+                            <option value="">Semua Genre</option>
+
+                            <option :value="g.name" v-for="g in genres" >
+                                {{ g.name }}
+                            </option>
+                        </select>
+
+                        <!-- Tahun -->
+                        <select v-model="selectedTahun" class="bg-gray-800 border border-white/10 focus:border-orange-500 outline-none rounded-xl px-4 py-3 text-gray-300 duration-300">
+                            <option value="">Semua Tahun</option>
+
+                            <option :value="y" v-for="y in years">
+                                {{ y }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Right -->
+                    <div>
+
+                        <select v-model="urutan" class="bg-gray-800 border border-white/10 focus:border-orange-500 outline-none rounded-xl px-4 py-3 text-orange-400 duration-300" >
+                            <option value="terbaru">Terbaru</option>
+                            <option value="terlama">Terlama</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <!-- Film -->
-            <div v-if="filteredFilm.length" class="grid grid-cols-2 lg:grid-cols-6 gap-5 border-t border-gray-500 pt-5">
-                <button @click="handleNavigate(f.id)" v-for="f in filteredFilm"
-                    class="bg-white/5 border-t border-white/10 h-75 rounded-xl overflow-hidden hover:-translate-y-2 hover:shadow-orange-500/20 hover:shadow-2xl duration-300 group">
+            <!-- INFO -->
+            <div class="flex justify-between items-center mb-6">
+
+                <h3 class="text-gray-300 text-lg">
+                    Menampilkan
+                    <span class="text-orange-400 font-bold">
+                        {{ filteredFilm.length }}
+                    </span>
+                    Film
+                </h3>
+            </div>
+
+            <!-- FILM -->
+            <div v-if="filteredFilm.length" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6" >
+
+                <button
+                    @click="handleNavigate(f.id)"
+                    v-for="f in filteredFilm"
+                    class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:-translate-y-2 hover:shadow-orange-500/20 hover:shadow-2xl duration-300 group" >
 
                     <!-- Image -->
-                    <div class="overflow-hidden">
-                        <img :src="`${API_URL}${f.image}`"
-                            class="h-50 w-full object-cover group-hover:scale-110 duration-500">
+                    <div class="overflow-hidden relative">
+
+                        <img :src="`${API_URL}${f.image}`" class="h-72 w-full object-cover group-hover:scale-110 duration-500" >
+
+                        <!-- Overlay -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-70">
+                        </div>
+
+                        <!-- Year -->
+                        <div class="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-full text-xs text-orange-400 font-semibold border border-orange-500/30" >
+                            {{ new Date(f.tanggal_rilis).getFullYear() }}
+                        </div>
                     </div>
 
                     <!-- Detail -->
-                    <div class="p-3 flex flex-col gap-1">
-                        <h3 class="font-semibold text-white truncate text-lg">
+                    <div class="p-4 flex flex-col gap-2 text-left">
+
+                        <h3 class="font-bold text-white truncate text-lg">
                             {{ f.title }}
                         </h3>
+
                         <h3 class="text-orange-400 truncate text-sm font-medium">
                             {{ getGenre(f) }}
                         </h3>
-                        <h3 class="text-gray-400 text-sm">
-                            {{ new Date(f.tanggal_rilis).getFullYear() }}
-                        </h3>
+
+                        <div class="flex items-center gap-2 text-gray-400 text-sm mt-1">
+
+                            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+
+                            <span>
+                                Film Populer
+                            </span>
+                        </div>
                     </div>
                 </button>
             </div>
 
-            <div v-else class="w-full">
-                <h3 class="text-4xl text-gray-500 border-t border-b border-gray-500 text-center pt-10 pb-10">Tidak Ada Film Yang Ditemukan</h3>
+            <!-- EMPTY -->
+            <div v-else class="bg-white/5 border border-white/10 rounded-2xl p-14 text-center flex flex-col gap-4" >
+                <h3 class="text-4xl font-bold text-gray-400">
+                    Film Tidak Ditemukan
+                </h3>
+
+                <h5 class="text-gray-500 text-lg">
+                    Coba gunakan kata kunci atau filter lainnya.
+                </h5>
             </div>
+
         </div>
     </div>
 </template>
