@@ -3,6 +3,7 @@ import Beranda from "../pages/Beranda.vue";
 import Film from "../pages/Film.vue";
 import Sutradara from "../pages/Sutradara.vue";
 import Aktor from "../pages/Aktor.vue";
+import FilmDetail from "../pages/FilmDetail.vue";
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
         path: "/aktor",
         component : Aktor,
         name: "Aktor"
+    },
+    {
+        path: "/film/detail",
+        component : FilmDetail,
+        name: "FilmDetail"
     }
 ]
 

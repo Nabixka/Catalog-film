@@ -2,9 +2,12 @@
     import { computed, onMounted, ref } from 'vue';
     import Navbar from '../components/Navbar.vue';
     import { api } from '../utils/utils';
+    import { useRouter } from 'vue-router';
+
+    const API_URL = import.meta.env.VITE_API_URL
+    const router = useRouter()
 
     const films = ref([])
-    const API_URL = import.meta.env.VITE_API_URL
     const message = ref("")
     const isLoading = ref(true)
     const genres = ref([])
@@ -13,6 +16,7 @@
     const selectedGenre = ref("")
     const selectedTahun = ref("")
     const urutan = ref("terbaru")
+
 
     const years = []
 
@@ -82,6 +86,13 @@
 
     })
 
+    const handleNavigate = (id) => {
+        router.push({
+            name: "FilmDetail",
+            state: {id: id}
+        })
+    }
+
     onMounted(() => {
         getFilms()
         getFilmGenres()
@@ -123,7 +134,7 @@
 
             <!-- Film -->
             <div v-if="filteredFilm.length" class="grid grid-cols-2 lg:grid-cols-6 gap-5 border-t border-gray-500 pt-5">
-                <div v-for="f in filteredFilm"
+                <button @click="handleNavigate(f.id)" v-for="f in filteredFilm"
                     class="bg-white/5 border-t border-white/10 h-75 rounded-xl overflow-hidden hover:-translate-y-2 hover:shadow-orange-500/20 hover:shadow-2xl duration-300 group">
 
                     <!-- Image -->
@@ -144,7 +155,7 @@
                             {{ new Date(f.tanggal_rilis).getFullYear() }}
                         </h3>
                     </div>
-                </div>
+                </button>
             </div>
 
             <div v-else class="w-full">

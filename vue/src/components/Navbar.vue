@@ -1,7 +1,7 @@
 <script setup>
-    import { ref } from 'vue';
+import { ref } from 'vue';
 
-    const isOpen = ref(false)
+const isOpen = ref(false)
 </script>
 
 <template>
@@ -9,7 +9,7 @@
         <div class="flex justify-between bg-black items-center p-3">
             <!-- Logo -->
             <div class="flex gap-3">
-                <img src="/src/assets/vue.svg">
+                <img class="w-10" src="/src/assets/mdi--movie-roll.svg">
                 <div>
                     <h2 class="text-lg font-extrabold text-white">FILM<span class="text-orange-600/90">KATALOG</span>
                     </h2>
