@@ -1,7 +1,80 @@
 <script setup>
+    import { computed, onMounted, ref } from 'vue';
     import Navbar from '../components/Navbar.vue';
+    import { api } from '../utils/utils';
+
+    const aktor = ref([])
+    const isLoading = ref(true)
+    const search = ref("")
+    const API_URL = import.meta.env.VITE_API_URL
+
+    const getAktor = async () => {
+        try{
+            const res = await api.get("/pemeran")
+            aktor.value = res.data.data
+        }
+        catch(err){
+            console.log(err)
+        }
+        finally{
+            isLoading.value = false
+        }
+    }
+
+    const filterAktor = computed(() => {
+        return aktor.value.filter(a => {
+            const matchSearch = !search.value.trim() || a.name?.toLowerCase().includes(search.value.trim().toLowerCase())
+
+            return matchSearch
+        })
+    })
+
+    onMounted(() => {
+        getAktor()
+    })
 </script>
 
 <template>
     <Navbar />
+    <div class="bg-black min-h-screen">
+        <div
+            class="relative overflow-hidden bg-gradient-to-r from-[#020617] via-[#0f172a] to-orange-700 h-[35vh] flex justify-center pl-8 flex-col gap-4 pt-16">
+
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-black/40"></div>
+
+            <!-- Blur -->
+            <div
+                class="absolute right-[-100px] top-[-100px] w-[350px] h-[350px] bg-orange-500/20 rounded-full blur-3xl">
+            </div>
+
+            <!-- Content -->
+            <div class="relative z-10 flex flex-col gap-3">
+
+                <h2 class="text-white text-5xl font-extrabold tracking-wide">
+                    Aktor <span class="text-orange-400">Terbaik</span>
+                </h2>
+
+                <h5 class="md:w-1/2 w-2/3 pb-3 text-gray-300 text-lg leading-relaxed">
+                    Temukan para Aktor berbakat dalam memerani karakter di film-film yang anda sukai 
+                </h5>
+            </div>
+        </div>
+
+        <div class="w-full bg-gradient-to-b from-[#020617] via-[#0f172a] to-black px-10 pt-6 pb-12">
+            <input v-model="search" class="w-full lg:w-1/3 text-gray-200 border border-gray-400 rounded p-2 mb-5" type="text" placeholder="cari aktor">
+            <h5 class="text-white text-md border-t border-gray-400 font-semibold pt-5">Menampilkan <span class="text-orange-400 font-bold">{{ filterAktor.length }}</span> Aktor</h5>
+            <div class="text-white grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 pt-7">
+                <button v-for="a in filterAktor"" class="h-72 rounded-lg overflow-hidden hover:shadow-md hover:-translate-y-3 hover:scale-102 shadow shadow-orange-500 relative">
+                    <img class="object-cover h-full w-full" :src="`${API_URL}${a.image}`">
+                    <div class="absolute bottom-0 bg-gradient-to-t from-black via-gray-950 to-transparent opacity-90 w-full h-1/2"></div>
+                    <div class="absolute pl-3 pr-3 bottom-5 w-full flex flex-col gap-3">
+                        <h4 class="font-semibold">{{ a.name }}</h4>
+                        <button class="border border-orange-500 text-orange-500 p-2 w-full rounded-lg">Lihat Detail</button>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+    </div>
 </template>

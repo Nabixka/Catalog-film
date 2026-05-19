@@ -40,7 +40,7 @@
     <Navbar />
     <div class="min-h-screen bg-black">
         <div
-            class="relative overflow-hidden bg-gradient-to-r from-[#020617] via-[#0f172a] to-orange-700 h-[38vh] flex justify-center pl-8 flex-col gap-4 pt-16">
+            class="relative overflow-hidden bg-gradient-to-r from-[#020617] via-[#0f172a] to-orange-700 h-[35vh] flex justify-center pl-8 flex-col gap-4 pt-16">
 
             <!-- Overlay -->
             <div class="absolute inset-0 bg-black/40"></div>
@@ -57,7 +57,7 @@
                     Sutradara <span class="text-orange-400">Terbaik</span>
                 </h2>
 
-                <h5 class="w-1/2 pb-3 text-gray-300 text-lg leading-relaxed">
+                <h5 class="w-2/3 md:w-1/2 pb-3 text-gray-300 text-lg leading-relaxed">
                     Temukan para sutradara berbakat dibalik film-film terbaik yang menginspirasi dunia
                 </h5>
             </div>
