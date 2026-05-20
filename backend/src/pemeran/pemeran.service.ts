@@ -16,27 +16,21 @@ export class PemeranService {
 
   async getOne(id: number) {
     const get = await this.knexService.connection("pemeran").where('id', id).first()
-    return {
-      message: "success",
-      data: get
-    }
-  }
-
-  async getByFilm(id: number){
-    const get = await this.knexService.connection("pemeran_film")
-    .join("pemeran", "pemeran.id", "pemeran_film.pemeran_id")
+    const film = await this.knexService.connection("pemeran_film")
     .join("film", "film.id", "pemeran_film.film_id")
     .select({
+      film_id: "film.id",
       film_title: "film.title",
-      pemeran_id: "pemeran.id",
-      pemeran_name: "pemeran.name",
-      pemeran_image: "pemeran.image"
+      film_image: "film.image",
+      film_description: "film.description"
     })
-    .where("film.id", id)
-
+    .where("pemeran_id", id)
     return {
       message: "success",
-      data: get.map(pemeranFilmMapping)
+      data: {
+        ...get,
+        film
+      }
     }
   }
 

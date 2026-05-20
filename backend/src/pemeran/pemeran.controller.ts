@@ -30,11 +30,6 @@ export class PemeranController {
     return this.pemeranService.create({...data, image: `/uploads/pemeran/${file?.filename}`})
   }
 
-  @Get("film/:id")
-  getByFilm(@Param("id") id: string){
-    return this.pemeranService.getByFilm(Number(id))
-  }
-
   @Get("/:id")
   getOne(@Param('id', ValidatePemeranExist) id: string){
     return this.pemeranService.getOne(Number(id))
