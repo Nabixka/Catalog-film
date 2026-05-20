@@ -54,7 +54,11 @@
                 name: "SutradaraDetail",
                 state : { id: id}
             })
-        }else{
+        }
+        else if(event === "back"){
+            router.back()
+        }
+        else{
             router.push({
                 name: "AktorDetail",
                 state: {id: id}
@@ -84,14 +88,14 @@
                 class="absolute right-[-100px] top-[-50px] w-[400px] h-[400px] bg-orange-500/20 rounded-full blur-3xl">
             </div>
 
-            <div class="relative z-10 flex gap-10 items-center">
+            <div class="relative lg:flex-row flex-col z-10 flex gap-10 items-center">
 
                 <!-- Poster -->
                 <div class="flex flex-col gap-4">
 
-                    <button class="flex items-center gap-2 text-gray-300 hover:text-orange-400 duration-300 text-sm">
+                    <button @click="handleNavigate('back')" class="flex items-center gap-2 text-gray-300 hover:text-orange-400 duration-300 text-sm">
                         <img src="/src/assets/lets-icons--back.svg">
-                        Kembali ke daftar Film
+                        Kembali
                     </button>
 
                     <img class="shadow-2xl shadow-orange-900/40 rounded-2xl w-80 h-[450px] object-cover border border-white/10"
@@ -99,7 +103,7 @@
                 </div>
 
                 <!-- Detail -->
-                <div class="flex flex-col gap-5 text-white w-2/3">
+                <div class="flex flex-col gap-5 text-white lg:w-2/3">
 
                     <div class="flex flex-col gap-3">
 
@@ -142,7 +146,7 @@
         <!-- CONTENT -->
         <div class="bg-gradient-to-b from-[#020617] via-[#0f172a] to-black p-6 text-white">
 
-            <div class="grid grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 <!-- LEFT -->
                 <div class="col-span-2 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-2xl">
@@ -178,7 +182,7 @@
                         <!-- Sutradara -->
                         <div v-if="isSutradaraOrPemeran == 'sutradara'">
 
-                            <div v-if="film.sutradara?.length" class="grid grid-cols-4 gap-6">
+                            <div v-if="film.sutradara?.length" class="grid grid-cols-2 lg:grid-cols-4 gap-6">
 
                                 <button @click="handleNavigate('sutradara', p.id)" v-for="p in film.sutradara"
                                     class="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-3 hover:-translate-y-2 duration-300">
@@ -204,7 +208,7 @@
                         <!-- Pemeran -->
                         <div v-else-if="isSutradaraOrPemeran == 'pemeran'">
 
-                            <div v-if="film.pemeran?.length" class="grid grid-cols-4 gap-6">
+                            <div v-if="film.pemeran?.length" class="grid grid-cols-2 lg:grid-cols-4 gap-6">
 
                                 <button @click="handleNavigate('aktor', p.id)" v-for="p in film.pemeran"
                                     class="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-3 hover:-translate-y-2 duration-300">

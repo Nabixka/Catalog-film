@@ -123,7 +123,7 @@
                     Daftar <span class="text-orange-400">Film</span>
                 </h2>
 
-                <h5 class="w-1/3 text-gray-300 text-lg leading-relaxed">
+                <h5 class="w-1/2 lg:w-1/3 text-gray-300 text-lg leading-relaxed">
                     Jelajahi seluruh koleksi film kami dari berbagai genre
                     dan temukan film favorit Anda.
                 </h5>

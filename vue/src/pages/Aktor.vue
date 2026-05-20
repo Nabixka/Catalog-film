@@ -2,11 +2,13 @@
     import { computed, onMounted, ref } from 'vue';
     import Navbar from '../components/Navbar.vue';
     import { api } from '../utils/utils';
+    import { useRouter } from 'vue-router';
 
     const aktor = ref([])
     const isLoading = ref(true)
     const search = ref("")
     const API_URL = import.meta.env.VITE_API_URL
+    const router = useRouter()
 
     const getAktor = async () => {
         try{
@@ -28,6 +30,13 @@
             return matchSearch
         }).sort((a, b) => b.name.localeCompare(a.name)).reverse()
     })
+
+    const handleNavigate = (id) => {
+        router.push({
+            name: "AktorDetail",
+            state: {id: id}
+        })
+    }
 
     onMounted(() => {
         getAktor()
@@ -65,7 +74,7 @@
             <input v-model="search" class="w-full lg:w-1/3 text-gray-200 border border-gray-400 rounded p-2 mb-5" type="text" placeholder="cari aktor">
             <h5 class="text-white text-md border-t border-gray-400 font-semibold pt-5">Menampilkan <span class="text-orange-400 font-bold">{{ filterAktor.length }}</span> Aktor</h5>
             <div class="text-white grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 pt-7">
-                <button v-for="a in filterAktor"" class="h-72 rounded-lg overflow-hidden hover:shadow-md hover:-translate-y-3 hover:scale-102 shadow shadow-orange-500 relative">
+                <button @click="handleNavigate(a.id)" v-for="a in filterAktor"" class="h-72 rounded-lg overflow-hidden hover:shadow-md hover:-translate-y-3 hover:scale-102 shadow shadow-orange-500 relative">
                     <img class="object-cover h-full w-full" :src="`${API_URL}${a.image}`">
                     <div class="absolute bottom-0 bg-gradient-to-t from-black via-gray-950 to-transparent opacity-90 w-full h-1/2"></div>
                     <div class="absolute pl-3 pr-3 bottom-5 w-full flex flex-col gap-3">
