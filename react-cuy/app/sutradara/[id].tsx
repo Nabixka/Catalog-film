@@ -8,6 +8,7 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
+import axios from "axios";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { API_URL, useResponsiveColumns } from "../config";
 import { NavigationBar } from "../components/NavigationBar";
@@ -44,19 +45,29 @@ export default function SutradaraDetailScreen() {
       return;
     }
 
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     const loadData = async () => {
       try {
-        const res = await fetch(`${API_URL}/sutradara/${sutradaraId}`);
-        const json = await res.json();
-        setSutradara(json.data ?? null);
+        const res = await axios.get(`${API_URL}/sutradara/${sutradaraId}`);
+        const data = res.data?.data ?? null;
+        timeoutId = setTimeout(() => {
+          setSutradara(data);
+          setIsLoading(false);
+        }, 600);
       } catch (err) {
         console.error(err);
-      } finally {
-        setIsLoading(false);
+        timeoutId = setTimeout(() => setIsLoading(false), 600);
       }
     };
 
     loadData();
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [id]);
 
   return (

@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import axios from "axios";
 import { Link } from "expo-router";
 import { API_URL, useResponsiveColumns } from "./config";
 import { NavigationBar } from "./components/NavigationBar";
@@ -24,19 +25,29 @@ export default function AktorScreen() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     const loadAktor = async () => {
       try {
-        const response = await fetch(`${API_URL}/pemeran`);
-        const json = await response.json();
-        setAktor(json.data ?? []);
+        const response = await axios.get(`${API_URL}/pemeran`);
+        const data = response.data?.data ?? [];
+        timeoutId = setTimeout(() => {
+          setAktor(data);
+          setIsLoading(false);
+        }, 600);
       } catch (error) {
         console.error(error);
-      } finally {
-        setIsLoading(false);
+        timeoutId = setTimeout(() => setIsLoading(false), 600);
       }
     };
 
     loadAktor();
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
   const filteredAktor = useMemo(

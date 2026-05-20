@@ -8,6 +8,7 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
+import axios from "axios";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { API_URL, useResponsiveColumns } from "../config";
 import { NavigationBar } from "../components/NavigationBar";
@@ -44,19 +45,29 @@ export default function ActorDetailScreen() {
       return;
     }
 
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     const loadDetail = async () => {
       try {
-        const response = await fetch(`${API_URL}/pemeran/${actorId}`);
-        const json = await response.json();
-        setAktor(json.data ?? null);
+        const response = await axios.get(`${API_URL}/pemeran/${actorId}`);
+        const data = response.data?.data ?? null;
+        timeoutId = setTimeout(() => {
+          setAktor(data);
+          setIsLoading(false);
+        }, 600);
       } catch (error) {
         console.error(error);
-      } finally {
-        setIsLoading(false);
+        timeoutId = setTimeout(() => setIsLoading(false), 600);
       }
     };
 
     loadDetail();
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [id]);
 
   return (

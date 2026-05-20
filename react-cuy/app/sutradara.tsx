@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import axios from "axios";
 import { API_URL, useResponsiveColumns } from "./config";
 import { NavigationBar } from "./components/NavigationBar";
 import { Link } from "expo-router";
@@ -24,19 +25,29 @@ export default function SutradaraScreen() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     const loadSutradara = async () => {
       try {
-        const response = await fetch(`${API_URL}/sutradara`);
-        const json = await response.json();
-        setSutradaras(json.data ?? []);
+        const response = await axios.get(`${API_URL}/sutradara`);
+        const data = response.data?.data ?? [];
+        timeoutId = setTimeout(() => {
+          setSutradaras(data);
+          setIsLoading(false);
+        }, 600);
       } catch (error) {
         console.error(error);
-      } finally {
-        setIsLoading(false);
+        timeoutId = setTimeout(() => setIsLoading(false), 600);
       }
     };
 
     loadSutradara();
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
   const filteredList = useMemo(
@@ -80,7 +91,7 @@ export default function SutradaraScreen() {
           ) : (
             <View style={styles.grid}>
               {filteredList.map((s) => (
-                <Link href={`/sutradara/${s.id}`} key={s.id} style={[styles.card, { width: itemWidth }]}>
+                <Link href={{ pathname: "/sutradara/[id]", params: { id: String(s.id) } }} key={s.id} style={[styles.card, { width: itemWidth }]}> 
                   <Image source={{ uri: `${API_URL}${s.image}` }} style={styles.image} />
                   <View style={styles.cardBody}>
                     <Text style={styles.cardTitle}>{s.name}</Text>
