@@ -1,7 +1,6 @@
 import Constants from "expo-constants";
 
 const expoConfig = Constants.expoConfig as any;
-// const extra = expoConfig?.extra as { apiUrl?: string; API_URL?: string } | undefined;
 
 export const API_URL = process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000";
 

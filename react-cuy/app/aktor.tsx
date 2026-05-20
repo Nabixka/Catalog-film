@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -8,6 +8,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { Link } from "expo-router";
 import { API_URL, useResponsiveColumns } from "./config";
 import { NavigationBar } from "./components/NavigationBar";
 
@@ -81,13 +82,17 @@ export default function AktorScreen() {
           ) : (
             <View style={styles.grid}>
               {filteredAktor.map((item) => (
-                <View key={item.id} style={[styles.card, { width: itemWidth }]}>
+                <Link
+                  href={{ pathname: "/aktor/[id]", params: { id: String(item.id) } }}
+                  key={item.id}
+                  style={[styles.card, { width: itemWidth }]}
+                >
                   <Image source={{ uri: `${API_URL}${item.image}` }} style={styles.image} />
                   <View style={styles.cardBody}>
                     <Text style={styles.cardTitle}>{item.name}</Text>
                     <Text style={styles.cardLabel}>Aktor</Text>
                   </View>
-                </View>
+                </Link>
               ))}
             </View>
           )}

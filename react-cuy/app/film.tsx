@@ -353,10 +353,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.12)",
     overflow: "hidden",
+    height: 350
   },
   cardImage: {
     width: "100%",
-    height: 170,
+    height: 250,
   },
   cardBody: {
     padding: 16,
@@ -376,4 +377,7 @@ const styles = StyleSheet.create({
     color: "#94A3B8",
     fontSize: 12,
   },
+  cardMeta: {
+    color: "#ffffff"
+  }
 });

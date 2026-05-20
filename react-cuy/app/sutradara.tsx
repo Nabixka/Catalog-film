@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { API_URL, useResponsiveColumns } from "./config";
 import { NavigationBar } from "./components/NavigationBar";
+import { Link } from "expo-router";
 
 type Sutradara = {
   id: number;
@@ -79,13 +80,13 @@ export default function SutradaraScreen() {
           ) : (
             <View style={styles.grid}>
               {filteredList.map((s) => (
-                <View key={s.id} style={[styles.card, { width: itemWidth }]}>
+                <Link href={`/sutradara/${s.id}`} key={s.id} style={[styles.card, { width: itemWidth }]}>
                   <Image source={{ uri: `${API_URL}${s.image}` }} style={styles.image} />
                   <View style={styles.cardBody}>
                     <Text style={styles.cardTitle}>{s.name}</Text>
                     <Text style={styles.cardLabel}>Sutradara</Text>
                   </View>
-                </View>
+                </Link>
               ))}
             </View>
           )}

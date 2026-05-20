@@ -7,6 +7,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    useWindowDimensions
 } from "react-native";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { API_URL, genreNames, useResponsiveColumns } from "../config";
@@ -35,6 +36,9 @@ export default function FilmDetailScreen() {
     const [isLoading, setIsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("sutradara");
     const { itemWidth } = useResponsiveColumns({ containerPadding: 20, gap: 16 });
+    const { width } = useWindowDimensions()
+
+    const isMediumScreen = width >= 768
 
     useEffect(() => {
         const movieId = Number(id);
@@ -71,11 +75,11 @@ export default function FilmDetailScreen() {
                     <ActivityIndicator size="large" color="#F97316" />
                 ) : film ? (
                     <>
-                        <View style={styles.hero}>
+                        <View style={[styles.hero, isMediumScreen && styles.heroDesktop]}>
                             <View style={styles.heroOverlay} />
                             <View style={styles.heroCircle} />
-                            <Image source={{ uri: `${API_URL}${film.image}` }} style={styles.heroImage} />
-                            <View style={styles.heroBody}>
+                            <Image source={{ uri: `${API_URL}${film.image}` }} style={[styles.heroImage, isMediumScreen && styles.heroImageDesktop]} />
+                            <View style={[styles.heroBody, isMediumScreen && styles.heroBodyDesktop]}>
                                 <Text style={styles.title}>{film.title}</Text>
                                 <Text style={styles.meta}>{new Date(film.tanggal_rilis).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</Text>
                                 <Text style={styles.meta}>{genreNames(film.genre)}</Text>
@@ -148,6 +152,10 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         paddingBottom: 16,
     },
+    heroDesktop: {
+        flexDirection: "row",
+        alignItems: "stretch"
+    },
     heroOverlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -165,8 +173,16 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 500,
     },
+    heroImageDesktop: {
+        width: 320,
+        height: "100%",
+    },
     heroBody: {
         padding: 24,
+    },
+    heroBodyDesktop: {
+        flex: 1,
+        justifyContent: "center",
     },
     title: {
         color: "#FFFFFF",
