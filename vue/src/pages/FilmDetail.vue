@@ -137,10 +137,6 @@
                             <button class="text-orange-400 border-b-2 border-orange-500 pb-2">
                                 Sinopsis
                             </button>
-
-                            <button class="text-gray-400 hover:text-white duration-300">
-                                Detail
-                            </button>
                         </div>
 
                         <!-- Description -->

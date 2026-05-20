@@ -26,7 +26,7 @@
             const matchSearch = !search.value.trim() || a.name?.toLowerCase().includes(search.value.trim().toLowerCase())
 
             return matchSearch
-        })
+        }).sort((a, b) => b.name.localeCompare(a.name)).reverse()
     })
 
     onMounted(() => {
