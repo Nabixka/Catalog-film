@@ -37,7 +37,7 @@ export class SutradaraService {
     }
 
     // Create
-    async create(data: {name: string, image: string}){
+    async create(data: {name: string, image: string, tanggal_lahir: string, description: string, tempat_asal: string}){
         const exist = await this.KnexService.connection("sutradara").where("name", data.name).first()
         if(exist) throw new ConflictException("Sutradara Sudah Ada")
         const [post] = await this.KnexService.connection("sutradara").insert(data).returning("*")
@@ -48,7 +48,7 @@ export class SutradaraService {
     }
 
     // Update
-    async update(id: number, data: {name: string, image?: string}){
+    async update(id: number, data: {name: string, image?: string, description: string, tanggal_lahir: string, tempat_asal: string}){
         const exist = await this.KnexService.connection("sutradara").where("name", data.name).first()
         if(exist) throw new ConflictException("Sutradara Sudah Ada")
         const [update] = await this.KnexService.connection("sutradara").update(data).where("id", id).returning("*")

@@ -7,6 +7,9 @@ exports.up = function(knex) {
     table.increments()
     table.string("name").notNullable()
     table.text("image").notNullable()
+    table.text("description").notNullable()
+    table.date("tanggal_lahir").notNullable()
+    table.string("tempat_asal").notNullable()
   })
 };
 

@@ -3,12 +3,14 @@
     import { onMounted, ref } from 'vue';
     import { api } from '../utils/utils';
     import { Icon } from '@iconify/vue' 
+    import { useRouter } from 'vue-router';
 
     const { state } = history   
 
     const id = state.id
     const film = ref({})
-    const API_URL = import.meta.env.VITE_API_URL    
+    const API_URL = import.meta.env.VITE_API_URL  
+    const router = useRouter()  
 
     const isSutradaraOrPemeran = ref("sutradara")   
 
@@ -44,6 +46,21 @@
                 : "border-transparent text-gray-400 hover:text-white"
         ]
     }   
+
+    const handleNavigate = (event, id) => {
+        console.log(event)
+        if(event === "sutradara"){
+            router.push({
+                name: "SutradaraDetail",
+                state : { id: id}
+            })
+        }else{
+            router.push({
+                name: "AktorDetail",
+                state: {id: id}
+            })
+        }
+    }
 
     onMounted(() => {
         getDetail()
@@ -163,7 +180,7 @@
 
                             <div v-if="film.sutradara?.length" class="grid grid-cols-4 gap-6">
 
-                                <div v-for="p in film.sutradara"
+                                <button @click="handleNavigate('sutradara', p.id)" v-for="p in film.sutradara"
                                     class="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-3 hover:-translate-y-2 duration-300">
 
                                     <img class="object-cover w-28 h-28 rounded-full border-2 border-orange-500 shadow-lg shadow-orange-500/20"
@@ -176,7 +193,7 @@
                                     <h5 class="text-sm text-orange-400">
                                         Sutradara
                                     </h5>
-                                </div>
+                                </button>
                             </div>
 
                             <div class="border-t border-white/10 pt-4 text-gray-400" v-else>
@@ -189,7 +206,7 @@
 
                             <div v-if="film.pemeran?.length" class="grid grid-cols-4 gap-6">
 
-                                <div v-for="p in film.pemeran"
+                                <button @click="handleNavigate('aktor', p.id)" v-for="p in film.pemeran"
                                     class="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-3 hover:-translate-y-2 duration-300">
 
                                     <img class="object-cover w-28 h-28 rounded-full border-2 border-orange-500 shadow-lg shadow-orange-500/20"
@@ -202,7 +219,7 @@
                                     <h5 class="text-sm text-orange-400">
                                         Pemeran
                                     </h5>
-                                </div>
+                                </button>
                             </div>
 
                             <div class="border-t border-white/10 pt-4 text-gray-400" v-else>

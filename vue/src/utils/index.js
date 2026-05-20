@@ -4,6 +4,8 @@ import Film from "../pages/Film.vue";
 import Sutradara from "../pages/Sutradara.vue";
 import Aktor from "../pages/Aktor.vue";
 import FilmDetail from "../pages/FilmDetail.vue";
+import SutradaraDetail from "../pages/SutradaraDetail.vue";
+import AktorDetail from "../pages/AktorDetail.vue";
 
 const routes = [
     {
@@ -30,6 +32,16 @@ const routes = [
         path: "/film/detail",
         component : FilmDetail,
         name: "FilmDetail"
+    },
+    {
+        path: "/sutradara/detail",
+        component : SutradaraDetail,
+        name: "SutradaraDetail"
+    },
+    {
+        path: "/aktor/detail",
+        component : AktorDetail,
+        name: "AktorDetail"
     }
 ]
 

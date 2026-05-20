@@ -25,8 +25,8 @@ export class PemeranController {
       },
     })
   }))
-  create(@Body() data: {name: string}, @UploadedFile() file: Express.Multer.File){
-    if(!file) throw new BadRequestException("Isi Yang Benar")
+  create(@Body() data: {name: string, description: string, tanggal_lahir: string, tempat_asal: string}, @UploadedFile() file: Express.Multer.File){
+    if(!file || !data.name || !data.description || !data.tanggal_lahir || !data.tempat_asal) throw new BadRequestException("Isi Yang Benar")
     return this.pemeranService.create({...data, image: `/uploads/pemeran/${file?.filename}`})
   }
 
@@ -51,7 +51,7 @@ export class PemeranController {
       },
     })
   }))
-  update(@Param('id', ValidatePemeranExist) id: string, @Body() data: {name: string}, @UploadedFile() file: Express.Multer.File){
+  update(@Param('id', ValidatePemeranExist) id: string, @Body() data: {name: string, description: string, tanggal_lahir: string, tempat_asal: string}, @UploadedFile() file: Express.Multer.File){
     return this.pemeranService.update(Number(id), 
     {
       ...data, 

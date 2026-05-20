@@ -25,8 +25,8 @@ export class SutradaraController {
       },
     })
   }))
-  create(@Body() data: {name: string}, @UploadedFile() file: Express.Multer.File){
-    if(!file || !data.name) throw new BadRequestException("Isi Yang Benar")
+  create(@Body() data: {name: string, description: string, tanggal_lahir: string, tempat_asal: string}, @UploadedFile() file: Express.Multer.File){
+    if(!file || !data.name || !data.description || !data.tanggal_lahir || !data.tempat_asal) throw new BadRequestException("Isi Yang Benar")
     return this.sutradaraService.create({...data, image: `/uploads/sutradara/${file.filename}`})
   }
 
@@ -46,7 +46,7 @@ export class SutradaraController {
       },
     })
   }))
-  update(@Param("id", validateSutradaraExist) id: string, @Body() data: {name: string}, @UploadedFile() file: Express.Multer.File){
+  update(@Param("id", validateSutradaraExist) id: string, @Body() data: {name: string, description: string, tanggal_lahir: string, tempat_asal: string}, @UploadedFile() file: Express.Multer.File){
     return this.sutradaraService.update(Number(id), {...data, image: file ? `/uploads/sutradara/${file.filename}` : undefined})
   }
 
